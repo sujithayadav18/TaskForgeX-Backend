@@ -14,7 +14,7 @@ app.use(express.json());
 app.get("/", (req, res) => {
   res.send("TaskForge API running 🚀");
 });
-app.use("/auth", authRoutes);
+app.use("/api/auth", authRoutes);
 app.use("/api/projects", projectRoutes);
 
 app.use(errorHandler);

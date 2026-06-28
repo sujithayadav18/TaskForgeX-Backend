@@ -1,7 +1,7 @@
 import prisma from "../lib/prisma";
 import { AppError } from "../utils/appError";
 
-export const createProjectService = async (
+export const createProject = async (
   name: string,
   description: string,
   userId: number
@@ -35,7 +35,6 @@ export const createProjectService = async (
 
     return project;
   } catch (err: any) {
-    // PostgreSQL unique violation via Prisma
     if (err.code === "P2002"&& err.meta?.target?.includes("name")) {
       throw new AppError(
         "Project with this name already exists",
@@ -45,4 +44,15 @@ export const createProjectService = async (
 
     throw err;
   }
+};
+
+export const getProjects = async (userId: number) => {
+    return prisma.projects.findMany({
+        where: {
+            owner_id: userId,
+        },
+        orderBy: {
+            created_at: "desc",
+        },
+    });
 };
